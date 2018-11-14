@@ -1,8 +1,12 @@
-const http = require('http');
+var http = require('http');
 const app = require('./app');
 
-const port = process.env.PORT || 3000;
+function onRequest(req, res){
+    console.log("GG");
+    res.writeHead(200, {"Content-Type" : "text/html"});
+    res.write("h");
+    res.end();
+}
 
-const server = http.createServer();
-
-server.listen(port);
+var server = http.createServer(app);
+server.listen(3000);
