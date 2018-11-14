@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 
-app.use((req, res, next) =>{
-    res.status(200).json({
-        message: 'Prueba'
-    });
-});
+const pizzaRoutes = require('./routes/pizza');
+const ordersRoutes = require('./routes/orders');
+
+app.use('/pizza', pizzaRoutes);
+app.use('/orders', ordersRoutes);
 
 module.exports = app;
