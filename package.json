@@ -1,0 +1,22 @@
+{
+  "name": "lab3_edii",
+  "version": "1.0.0",
+  "description": "Laboratorio 3 Estructura de Datos II",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erickcontreras12/Lab3_EDII.git"
+  },
+  "author": "Erick Contreras",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erickcontreras12/Lab3_EDII/issues"
+  },
+  "homepage": "https://github.com/erickcontreras12/Lab3_EDII#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
