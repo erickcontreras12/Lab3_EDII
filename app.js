@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 
-const pizzaRoutes = require('./routes/pizza');
-const ordersRoutes = require('./routes/orders');
+const jwtRoutes = require('./routes/key');
 
-app.use('/pizza', pizzaRoutes);
-app.use('/orders', ordersRoutes);
+app.use('/key', jwtRoutes);
 
 module.exports = app;
