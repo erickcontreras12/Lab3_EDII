@@ -8,8 +8,14 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+    const product = {
+        nombre: req.body.name,
+        desc: req.body.desc,
+
+    }
     res.status(201).json({
-        message : 'POST request'
+        message : 'POST request correct',
+        createdPizza: product
     });
 });
 
