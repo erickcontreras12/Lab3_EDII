@@ -1,49 +1,86 @@
 const express = require('express');
 const router = express.Router();
+var Pizza = require('./pizzaController');
 
-router.get('/', (req, res, next) => {
-    res.status(200).json({
-        message : 'GET request'
-    });
+const mongoose = require('mongoose');
+
+router.get('/todos',(req,res,next)=>{
+    Pizza.find({}, function(error, pizzas){
+        if(error){
+            const error = new Error('No existe ningun registro');
+             error.status = 404;
+             next(error);
+        }else{
+            
+            res.status(200).send(pizzas);
+        }
+     })
 });
 
-router.post('/', (req, res, next) => {
-    const product = {
-        nombre: req.body.name,
-        desc: req.body.desc,
-
-    }
-    res.status(201).json({
-        message : 'POST request correct',
-        createdPizza: product
-    });
+router.post('/crear',(req,res,next)=>{
+    let product = new Pizza(
+        {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion,
+            ingredientes:req.body.ingredientes,
+            masa: req.body.masa,
+            tamanio:req.body.tamanio,
+            porciones:req.body.porciones,
+            extra_queso:req.body.extra_queso
+        }
+    );
+    product.save(function (err) {
+        if (err) {
+            const error = new Error('Error al insertar en la base de datos');
+             error.status = 400;
+             next(error);
+        }
+        res.status(200).send('Product Created successfully')
+});
 });
 
-router.get('/:pizzaId', (req, res, next) => {
-    const id = req.params.pizzaId;
-    if (id === 'rica'){
-        res.status(200).json({
-            message: 'FUCKK',
-            id: id
-        });
-    }else{
-        res.status(200).json({
-            message: 'Oh oh',
-        });
-    }
+router.get('/:pizzaID',(req,res,next)=>{
+const id = req.params.pizzaID;
+Pizza.findById(id, function (err, documento) {
+    if (err){
+        return next(err);
+    } 
+    res.status(200).send(documento);
+})
 });
 
-
-router.patch('/:pizzaId', (req, res, next) => {
-    res.status(200).json({
-        message : 'Receta actualizada'
-    });
+router.patch('/:pizzaID',(req,res,next)=>{
+    const id = req.params.pizzaID;
+    Pizza.findById(id, function(error, documento){
+        if(error){
+           res.send('Error al intentar modificar el personaje.');
+        }else{
+           var pizza = documento;
+           pizza.nombre = req.body.nombre;
+           pizza.descripcion = req.body.descripcion;
+           pizza.ingredientes = req.body.ingredientes;
+           pizza.masa = req.body.masa;
+           pizza.tamanio = req.body.tamanio;
+           pizza.porciones = req.body.porciones;
+           pizza.extra_queso = req.body.extra_queso;
+           pizza.save(function(error, documento){
+              if(error){
+                 res.status(500).send('Error al intentar guardar el personaje.');
+              }else{ 
+                res.status(200).send('Se actualizo correctamente')
+              }
+           });
+        }
+     });
 });
-
-router.delete('/:pizzaId', (req, res, next) => {
-    res.status(200).json({
-        message : 'Pizza eliminada:('
-    });
+router.delete('/:Nombre',(req,res,next)=>{
+    const id = req.params.nombre;
+    Pizza.findOneAndDelete({nombre: id}, function(error){
+        if(error){
+           res.status(500).send('Error al intentar eliminar el personaje.');
+        }else{ 
+           res.status(200).send('Se elimino correcto');            
+        }
+     });
 });
-
 module.exports = router;
